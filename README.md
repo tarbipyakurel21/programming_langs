@@ -1,4 +1,3 @@
-In this repo I have put all the old programming languages that I am learning. 
-This includes:
+This repo includes all the old programming languages that I am learning:
 
 1. FORTRAN IV
