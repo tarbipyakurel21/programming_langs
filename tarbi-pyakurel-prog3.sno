@@ -1,0 +1,64 @@
+* Author: Tarbi Pyakurel
+* USM ID: w10172900
+* Course: CSC 408
+* Description: This program repeatedly reads lines of input until the user entere "END".
+*	       It process each line character by character to extract tokens using pattern
+*              matching. It outputs the total valid words, vowel words, consonant words and
+*              invalid tokens that user input.
+
+* define variables for output
+	TOTAL_WORDS = 0
+	VOWEL = 0
+	CONSONANT = 0
+	INVALID = 0
+
+* define vowels to check later if input contains them
+	VOWELS = 'AEIOUaeiou'
+
+* set trim switch to true 
+* inputs from the terminal are trimmed by default after this switch (trim())
+	&TRIM = 1
+
+* define the word pattern
+* valid word include all lower case and upper case letters
+	WORD = &LCASE &UCASE
+
+* read the input
+* display the final output if failure to read input
+READ	LINE = INPUT		:F(OUTPUT)
+* display the final output if user inputs "END"
+	IDENT(LINE,"END")	:S(OUTPUT)
+
+* gets next token
+LOOP	LINE BREAK(" ") . TOKEN SPAN(" ") =	:S(PARSE) F(FINAL)
+
+* check if the entire token is made of letters only
+* if not goto count invalid
+PARSE	TOKEN POS(0) SPAN(WORD) RPOS(0)	:F(COUNT_INV)
+* increase word count if token is all letters
+	TOTAL_WORDS = TOTAL_WORDS + 1
+* check if token starts with a vowel, increase cons count on failure
+	TOKEN POS(0) ANY(VOWELS)	:F(IS_CONS)
+* increase vowel count on success
+	VOWEL = VOWEL + 1		:(LOOP)
+
+* goto loop after counting consonant
+IS_CONS	CONSONANT = CONSONANT + 1	:(LOOP)
+
+* goto loop after counting invalid token to process new token
+COUNT_INV INVALID = INVALID + 1		:(LOOP)
+
+* handles last token in line
+FINAL	LINE = TRIM(LINE)
+	IDENT(LINE)			:S(READ)
+	TOKEN = LINE
+	LINE = ""
+					:(PARSE)
+
+* display the output
+OUTPUT	OUTPUT = "Total words: " TOTAL_WORDS
+	    OUTPUT = "Vowel words: "	VOWEL
+	    OUTPUT = "Consonant words: " CONSONANT
+	    OUTPUT = "Invalid tokens: " INVALID
+
+END
