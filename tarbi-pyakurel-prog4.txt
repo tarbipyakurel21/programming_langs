@@ -1,0 +1,86 @@
+# 
+Author: Tarbi Pyakurel
+USM ID: w10172900
+Course: CSC 408
+Description: This program reads 25 integers from the user and stores them in a 5*5 two-dimensional array.
+	     The program prints the matrix in table form and computes and prints sum of each row,
+	     sum of each column and prints the largest value in the matrix and row and column where it 
+	     occurs. 
+#
+
+# BEGIN THE PROGRAM # 
+BEGIN
+
+	# DECLARE 5*5 MATRIX OF INTEGERS #
+	# use 5*5 matrix MODE declaration #
+	MODE MATRIX=[1:5,1:5] INT;
+	MATRIX matrix;
+	
+	# declare arrays to store sum of row and columns #
+	[1:5] INT row sums;
+	[1:5] INT col sums;
+
+	# variables to store maximum values #
+	# store a negative val in max so any value is greater than it #
+	INT max val :=-50000;
+	INT max row :=1;
+	INT max col :=1;
+	
+	# PRINT the prompt to enter values #
+	print(("Enter values for a 5 x 5 matrix",new line));
+	
+	# read the values into 5 x 5 matrix #
+	FOR i FROM 1 TO 5 DO
+		FOR j FROM 1 TO 5 DO
+			read(matrix[i,j])
+		OD
+	OD;
+		
+	# print the matrix in table form #
+	print(("Matrix entered:",new line));
+	# nested loop to access 2D matrix #
+	FOR i FROM 1 TO 5 DO
+		FOR j FROM 1 TO 5 DO
+			print((whole(matrix[i,j],0)," "))
+		OD;
+		print(new line)
+	OD;
+
+	# calculate and print the matrix row sums #
+	print(("Row sums:", new line)); 
+	FOR i FROM 1 TO 5 DO
+		# initialize for the current row every time inner loop ends # 
+		INT row sum :=0;
+		FOR j FROM 1 TO 5 DO
+			row sum := row sum + matrix[i,j]
+		OD;
+		# print row{i} and its sum after inner loop calculates sum for each i row #
+		print(("Row ",whole(i,0),": ",whole(row sum,0),new line))
+	OD;
+
+	# calculate and print the matrix col sums #
+	print(("Column sums:", new line));
+	FOR j  FROM 1 TO 5 DO
+		INT col sum:=0;
+		# do inverse for column as we access[1,0], [2,0] and so on #
+		FOR i FROM 1 TO 5 DO
+			col sum := col sum + matrix[i,j]
+		OD;
+		print(("Col ", whole(j,0), ": ", whole(col sum, 0), new line))
+	OD;
+	
+	# find the maximum value and it's location #
+	FOR i FROM 1 TO 5 DO
+		FOR j FROM 1 TO 5 DO
+			IF matrix[i,j]>max val THEN
+				max val := matrix[i,j];
+				max row := i;
+				max col := j
+			FI
+		OD
+	OD;
+
+	# print maximum value and it's location #
+	print(("Maximum value: ", whole(max val, 0), new line));
+	print(("Location: Row ", whole(max row,0), " Column ", whole(max col, 0), new line ))
+END
